@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Contract, getDefaultProvider } from "ethers";
+import { Contract, getDefaultProvider, providers, utils } from "ethers";
 import { config } from "../config";
 import abi from "../fixtures/abi.json";
 import axios from "axios";
@@ -51,8 +51,24 @@ export const HomePage = () => {
     loadRobotsData();
   }, []);
 
-  const handlePurchase = () => {
-    alert("Purchasing a Robot...");
+  const handlePurchase = async () => {
+    const { ethereum } = window;
+    if (typeof ethereum == "undefined") alert("Metamask is not detected");
+
+    // Prompts Metamask to connect
+    await ethereum.enable();
+
+    // Create new provider from Metamask
+    const provider = new providers.Web3Provider(window.ethereum);
+
+    // Get the signer from Metamask
+    const signer = provider.getSigner();
+
+    // Sends a simple transaction to an account
+    await signer.sendTransaction({
+      to: "0xA4bFA6B9819bc8857524eA5a6C691F045131307b",
+      value: utils.parseEther("0.01"),
+    });
   };
 
   return (
