@@ -4,12 +4,9 @@ import { config } from "../config";
 import abi from "../fixtures/abi.json";
 import axios from "axios";
 
+const contractAddr = "0xaE742f43eEa24BA6D8365e1f2e2BCa6de3928318";
 const provider = getDefaultProvider("rinkeby", { alchemy: config.alchemyKey });
-const contract = new Contract(
-  "0x0Cc1bb3e59E9c7f76475e6C958892Cd3a3724e98",
-  abi,
-  provider
-);
+const contract = new Contract(contractAddr, abi, provider);
 
 const formatIpfsUrl = (url) => {
   return url.replace(/ipfs:\/\//g, "https://cloudflare-ipfs.com/");
@@ -73,11 +70,7 @@ export const HomePage = () => {
     const signer = provider.getSigner();
 
     // Create the contract instance
-    const contract = new Contract(
-      "0x0Cc1bb3e59E9c7f76475e6C958892Cd3a3724e98",
-      abi,
-      signer
-    );
+    const contract = new Contract(contractAddr, abi, signer);
 
     // Call the purchase method
     setPurchaseState({ state: "PENDING_SIGNER" });
